@@ -9,3 +9,6 @@
 """
 import json
 from tornado.web import RequestHandler,StaticFileHandler
+
+class BaseHandler(RequestHandler):
+    """"自定义基类"""
