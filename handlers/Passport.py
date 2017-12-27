@@ -8,10 +8,10 @@
 -------------------------------------------------
 """
 import logging
-from .BaseHandlers import BaseHandler
+from handlers.BaseHandlers import BaseHandler
 
 class IndexHandler(BaseHandler):
     def get(self):
-        logging.debug()
+        # logging.debug()
         self.write("hello")
         # pass
