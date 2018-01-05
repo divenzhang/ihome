@@ -154,7 +154,7 @@ $(document).ready(function() {
         }
 
         // 声明一个要保存结果的变量
-        var data = {}
+        var data = {};
         // 把表单中的数据填充到data中
         $(".form-register").serializeArray().map(function(x){data[x.name]=x.value})
         // 把data变量转为josn格式字符串

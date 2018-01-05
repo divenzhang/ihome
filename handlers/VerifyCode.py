@@ -36,7 +36,7 @@ class PicCodeHandler(BaseHandler):
             # self.write("")
         self.set_header("Content-Type", "image/jpg")
         self.write(image)
-
+# 短信验证码
 class SMSCodeHandler(BaseHandler):
     """短信验证码"""
     def post(self):
@@ -61,9 +61,9 @@ class SMSCodeHandler(BaseHandler):
         # print("expect_%s"%piccode)
         # print("redis_%s"%real_piccode)
         # exit()
-        # print(type(piccode))
-        # print(type(real_piccode))
-        # exit()
+        print(type(piccode))
+        print(type(real_piccode))
+        exit()
 
         if not real_piccode:
             return self.write(dict(errcode=RET.NODATA, errmsg="验证码过期"))
@@ -105,3 +105,5 @@ class SMSCodeHandler(BaseHandler):
             self.write(dict(errcode=RET.OK, errmsg="发送成功"))
         else:
             self.write(dict(errcode=RET.UNKOWNERR, errmsg="发送失败"))
+
+

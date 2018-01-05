@@ -19,6 +19,7 @@ urls = [
     # (r"/api/logout", Passport.LogHandler),
     (r"/api/check_login", Passport.CheckLoginHandler), # 判断用户是否登录
     (r'^/api/house/index$', House.IndexHandler), # 首页
+    (r"/api/register", Passport.RegisterHandler),
     (r"/(.*)", StaticFileHandler,
      dict(path=os.path.join(os.path.dirname(__file__), "html"), default_filename="index.html"))
 
