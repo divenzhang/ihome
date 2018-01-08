@@ -19,12 +19,45 @@ from utils.session import Session
 #         # logging.debug()
 #         self.write("hello")
         # pass
-#   登录出来
+#   登录
 class LoginHandler(BaseHandler):
-    pass
+
+    def post(self, *args, **kwargs):
+        mobile = self.json_args.get('mobile')
+        password = self.json_args.get('password')
+        # 检查参数
+        if not all([mobile,password]):
+            return self.write(dict(errcode=RET.PARAMERR, errmsg="参数错误"))
+        if not re.match(r"^1\d{10}$",mobile):
+            return self.write(dict(errcode=RET.DATAERR,errmsg="手机号错误"))
+#         检查密码是否正确
+        res =self.db.get("select up_user_id,up_name,up_passwd from ih_user_profile where up_mobile=%(mobile)s",mobile=mobile)
+        password = hashlib.sha256(password+config.passwd_hash_key).hexdigest()
+
+        if res and res['up_password'] == password:
+            # 生成session数据
+            # 返回客户端
+            try:
+                self.session = Session(self)
+                self.session.data['user_id'] = res['up_user_id']
+                self.session.data['name'] = res['up_name']
+                self.session.data['moblie'] = mobile
+                self.session.save()
+            except Exception as e :
+                logging.error(e)
+            return self.write(dict(errcode=RET.OK, errmsg="OK"))
+        else:
+            return self.write(dict(errcode=RET.DATAERR,errmsg="手机号或密码错误！"))
+
+
+
 # 退出登录
 class LogoutHandler(BaseHandler):
-    pass
+    def get(self, *args, **kwargs):
+        sha1_test = hashlib.sha256()
+        sha1_test.update("12345".encode("utf8"))
+        self.write(sha1_test.hexdigest())
+    # pass
 # 检查是否登录
 class CheckLoginHandler(BaseHandler):
     def get(self, *args, **kwargs):
@@ -46,6 +79,7 @@ class RegisterHandler(BaseHandler):
         if not re.match(r"^1\d{10}$", mobile):
             return self.write(dict(errcode=RET.DATAERR, errmsg="手机号格式错误"))
         # 判断短信验证码是否真确
+        # TODO 测试阶段短信验证先默认为2468
         if "2468" != sms_code:
             try:
                 # real_sms_code = self.redis.get("sms_code_%s" % mobile)

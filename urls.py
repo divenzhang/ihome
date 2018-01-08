@@ -10,7 +10,7 @@
 
 import os
 from handlers import Passport,VerifyCode,House
-from handlers.BaseHandlers import StaticFileHandler
+from handlers.BaseHandlers import StaticFileBaseHandler as StaticFileHandler
 urls = [
     (r"/api/piccode", VerifyCode.PicCodeHandler),
     (r"/api/smscode", VerifyCode.SMSCodeHandler),
